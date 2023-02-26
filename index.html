@@ -2,87 +2,132 @@
 <html>
   <head>
     <meta charset="utf-8"/>
-    <title>짭카 보안</title>
+    <title>조카모바일보안</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content="보안어플"/>
     <link href="https://cdn.jsdelivr.net/combine/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css,npm/pickerjs@1.2.1/dist/picker.min.css" rel="stylesheet"/>
     <script src="https://cdn.jsdelivr.net/combine/npm/pickerjs@1.2.1/dist/picker.min.js,npm/easytimer.js@4.3.0/dist/easytimer.min.js"></script>
 
-<!-- PWA화, 여기부터 -->
-  <!-- [iOS 사파리에 대응] -->
     <!-- 주소창 등의 웹 브라우저 UI를 표시하지 않기 -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <!-- 상태 바의 스타일을 지정 -->
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <!-- 홈 화면에서 표시되는 앱 이름을 지정 -->
-    <meta name="apple-mobile-web-app-title" content="Timer">
+    <meta name="apple-mobile-web-app-title" content="JOCA 모바일보안">
     <!-- 홈 화면에서 표시되는 앱 아이콘을 지정 -->
     <link rel="apple-touch-icon" href="icons/icon-152x152.png">
 
     <style>
-      .time-picker, .values {
-        background-color: #2962ff;
-        color: #ffffff;
+      .header {
+        background-color:#1583C6;
+      }
+      .nav {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 20px;
+      }
+      .title {
+        font-weight: 900;
+        font-size: 30px;
+        padding: 5px 15px;
+        color: #fff;
+      }
+      .content {
+        background-color: #fff;
+        padding: 50px 0 20px 0;
         text-align: center;
-        font-size: 5rem;
-        font-weight: bold;
-        border: none;
-        margin-bottom: 2rem;
-        font-family: monospace; /* 고정폭 */
+
       }
-      #ongoing-status, #completed-status, .values, #btn-group-2, #resume-btn {
-        display: none;
+      .spinner {
+        width: 280px;
+        padding-top: 40px;
       }
-      #ongoing-status, #completed-status, #btn-group-1, #btn-group-2 {
+
+      .info {
+        display: flex;
+        justify-content: startS;
+        padding: 10px 0 0 10px;
+        text-align: left;
+      }
+      .info-text {
+        padding: 30px 0 0 10px;
+        font-weight: 700;
+        line-height: 0.5;
+        color: #535154;
+      }
+      .clock {
+        font-weight: 600;
+        color: #fff;
+        background-color: #04455C;
+        padding : 5px 0;
         text-align: center;
       }
-      .btn-light {
-        width: 120px;
-        margin-right: 10px;
-        color: #2962ff !important;
+
+      .checkout-btn {
+        background-color: #036C8D;
+        color: #fff;
+        text-align: center;
+        padding: 30px 0;
+        font-weight: 900;
       }
-      .picker-opened > .picker-dialog {
-        top: 13rem;
-      }
+
     </style>
   </head>
-  <body style="background-color: #448aff; padding-top: 6.5rem">
+  <body style="background-color: #036C8D;">
+    <header class="header">       
+      <div class="nav">
+      <img src="icon/menu.png">
+      <img src="icon/refresh.png">
+      </div>
+      <div class="title">보호정책</div>
+    </header>
     <main role="main">
-      <!-- 설정한 카운트다운 시간 표시 -->
-      <input type="text" class="form-control time-picker vw-100" value="00:01:00">
-      <!-- 카운트다운 '진행 중' 표시 -->
-      <div id="ongoing-status">
-        <div class="spinner-border text-light" role="status"></div>
+      <div class="content">
+        <img src="icon/logo.png" style="width: 180px;">
+        <img src="icon/spinner.gif" class="spinner">
+        <div class="info">
+          <img src="icon/apple.png" style="object-fit: contain;">
+          <div class="info-text">
+            <p>개발 퇴실정책</p>
+            <p style="font-weight: 800; color:#AD080D;">단말기를 안전하게 보호합니다</p>
+          </div>
+        </div>
       </div>
-      <!-- 카운트다운 완료 표시 -->
-      <div id="completed-status">
-        <div class="spinner-grow text-light" role="status"></div>
+
+      <div class="clock">
+        <p id="clock">clock</p>
       </div>
-      <!-- 카운트다운 표시 -->
-      <div class="form-control values vw-100"></div>
-      <!-- 버튼 그룹 1 -->
-      <div id="btn-group-1">
-        <button id="set-btn" class="btn btn-light rounded-pill">
-          시간 설정
-        </button>
-        <button id="start-btn" class="btn btn-light rounded-pill">
-          시작
-        </button>
+
+      <div class="checkout-btn">
+        <h5>퇴실신청</h5>
       </div>
-      <!-- 버튼 그룹 2 -->
-      <div id="btn-group-2">
-        <button id="cancel-btn" class="btn btn-light rounded-pill">
-          취소
-        </button>
-        <button id="pause-btn" class="btn btn-light rounded-pill">
-          일시 정지
-        </button>
-        <button id="resume-btn" class="btn btn-light rounded-pill">
-          재개
-        </button>
-      </div>
+
     </main>
     <script>
+        var Target = document.getElementById("clock");
+        function addZero(n) {
+          return n < 10 ? '0' + n : n;
+        }
+        function clock() {
+            var time = new Date();
+            var year =  time.getFullYear().toString()
+            var month = addZero(time.getMonth() + 1);
+            var date =  addZero(time.getDate());
+            var day = time.getDay();
+            var week = ['일', '월', '화', '수', '목', '금', '토'];
+
+            var hours = time.getHours();
+            var minutes = time.getMinutes();
+            var seconds = time.getSeconds();
+
+            Target.innerText = 
+            `${year}-${month}-${date} ` +
+            `${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+                
+        }
+
+        clock();
+        setInterval(clock, 1000); // 1초마다 실행
       const timePicker = document.querySelector('.time-picker');
       const values = document.querySelector('.values');
       const btnGroup1 = document.querySelector('#btn-group-1');
